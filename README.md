@@ -2,6 +2,8 @@
 
 This project demonstrates a dynamic code snippet generator using Vue.js. The core idea is to show how you can build a UI that lets users select features, and then dynamically generate code based on those selections.
 
+![screenshot](dynamic%20snippit.png)
+
 ## Key Features
 
 *   **Feature Selection:**  A list of checkboxes allows users to enable or disable different features.
