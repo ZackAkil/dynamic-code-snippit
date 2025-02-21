@@ -1,4 +1,4 @@
-# Dynamic Code Snippet Demo
+# Dynamic Code Snippet Demo ([live demo](https://zackakil.github.io/dynamic-code-snippit/))
 
 This project demonstrates a dynamic code snippet generator using Vue.js. The core idea is to show how you can build a UI that lets users select features, and then dynamically generate code based on those selections.
 
