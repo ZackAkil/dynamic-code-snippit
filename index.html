@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dynamic Code Snippet</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="app" class="container">
+      <h1>Dynamic Code Snippet</h1>
+
+      <p class="explanation">
+        This demo showcases how to create a dynamic code snippet that changes
+        based on selected features. Toggle the checkboxes to see the code update
+        in real-time. Hovering over a feature highlights the corresponding code
+        sections.
+      </p>
+
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Features</h2>
+          <p class="explanation">
+            Select the features you want to include in the generated code.
+          </p>
+          <ul class="features-list">
+            <li v-for="feature in features" :key="feature.name">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="feature.enabled"
+                  :id="'feature' + feature.name"
+                />
+                <label
+                  class="form-check-label"
+                  :for="'feature' + feature.name"
+                  @mouseover="highlightFeatureCode(feature.name)"
+                  @mouseout="highlightFeatureCode(null)"
+                >
+                  {{ feature.displayName }}
+                </label>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-md-8">
+          <h2>Code Snippet</h2>
+          <p class="explanation">
+            The code snippet below dynamically updates based on the features you
+            select.
+          </p>
+          <div class="code-container">
+            <pre><transition-group name="code-line" tag="code">
+                <div
+                  class="code-line"
+                  v-for="(line, index) in shownLines"
+                  :key="line.code"
+                  :class="{ 'highlighted-code': line.features.includes(hoveredFeature) }"
+                  v-html="line.code"
+                ></div>
+              </transition-group></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="dynamicCode.js"></script>
+
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          hoveredFeature: null,
+          ...dynamicCode,
+        },
+        computed: {
+          enabledFeatures() {
+            return this.features.filter((f) => f.enabled).map((f) => f.name);
+          },
+          shownLines() {
+            return this.codeTemplate.lines.filter((line) => {
+              if (line.features.length == 0) return true;
+              return line.features.some((feature) =>
+                this.enabledFeatures.includes(feature)
+              );
+            });
+          },
+        },
+        methods: {
+          highlightFeatureCode(featureName) {
+            console.log(featureName);
+            this.hoveredFeature = featureName;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
